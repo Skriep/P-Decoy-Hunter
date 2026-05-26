@@ -7,7 +7,6 @@ import argparse
 import logging
 import os
 from typing import List
-from tqdm.asyncio import tqdm
 
 from probes import init_probes, test_tcp_port, test_udp_port
 
@@ -60,7 +59,7 @@ async def run_scan(host: str, ports: List[int], protocols: List[str], concurrenc
             tasks.append(task)
 
     desc = f"Scanning {host}"
-    for _ in tqdm.as_completed(tasks, total=total_tasks, desc=desc, unit="port", colour="green"):
+    for _ in asyncio.as_completed(tasks):
         await _
 
     print("\n" + "="*80)
